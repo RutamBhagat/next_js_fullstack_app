@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const CreatePost = () => {
+  const router = useRouter();
+
   const [title, setTitle] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
-  let toastPostID: string
+  let toastPostID: string;
 
   const addPost = async (title: string) => {
     await axios.post("/api/posts/addPost", { title });
@@ -16,27 +19,31 @@ const CreatePost = () => {
   const { mutate } = useMutation(addPost, {
     onError: (error) => {
       if (error instanceof AxiosError) {
-        toast.error(error?.response?.data.message, {id: toastPostID});
+        toast.error(error?.response?.data.message, { id: toastPostID });
       }
       setIsDisabled(false);
     },
     onSuccess: (data) => {
-      toast.success("Post created successfully.", {id: toastPostID})
+      toast.success("Post created successfully.", { id: toastPostID });
       setTitle("");
       setIsDisabled(false);
+      router.refresh();
     },
   });
 
   const submitPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toastPostID = toast.loading("Creating post...", {id: toastPostID});
+    toastPostID = toast.loading("Creating post...", { id: toastPostID });
     setIsDisabled(true);
     mutate(title);
   };
 
   return (
     <>
-      <form className="flex py-10 justify-center items-center" onSubmit={submitPost}>
+      <form
+        className="flex pt-10 justify-center items-center"
+        onSubmit={submitPost}
+      >
         <div className="w-full max-w-xl mx-10 lg:mx-24 lg:max-w-3xl mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
           <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
             <label htmlFor="comment" className="sr-only">
@@ -55,7 +62,7 @@ const CreatePost = () => {
           <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
             <button
               disabled={isDisabled}
-              type="submit" 
+              type="submit"
               className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
             >
               Post comment

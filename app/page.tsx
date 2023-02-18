@@ -4,22 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import CreatePost from "./components/CreatePost";
 import Posts from "./components/Posts";
-
-export type Post = {
-  createdAt: string;
-  id: string;
-  published: boolean;
-  title: string;
-  updatedAt: string;
-  userId: string;
-  user: {
-    email: string;
-    emailVerified: string;
-    id: string;
-    image: string;
-    name: string;
-  };
-};
+import { type PostType } from "./types/Posts";
 
 // Fetch all posts from the server
 const allPosts = async () => {
@@ -28,7 +13,7 @@ const allPosts = async () => {
 };
 
 export default function Home() {
-  const { data, error, isError, isLoading } = useQuery({
+  const { data, error, isError, isLoading } = useQuery<PostType[]>({
     queryKey: ["allPosts"],
     queryFn: allPosts,
   });
@@ -80,7 +65,7 @@ export default function Home() {
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap justify-center -m-4">
-            {data?.map((post: Post) => (
+            {data?.map((post) => (
               <Posts key={`${post.title}_id`} post={post} />
             ))}
           </div>
