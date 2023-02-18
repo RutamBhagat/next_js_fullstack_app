@@ -25,8 +25,7 @@ export default async function handler(
     const title: string = req.body.title;
     if (title.length > 300) {
       return res.status(403).json({ message: "Please Write a shorter post" });
-    } 
-    else if (!title.length) {
+    } else if (!title.length) {
       return res
         .status(403)
         .json({ message: "Please do not leave this empty" });
@@ -36,13 +35,15 @@ export default async function handler(
     try {
       const result = await prisma.post.create({
         data: {
-          title,
-          userId: prismaUser?.id,
+          title: title as string,
+          userId: prismaUser?.id as string,
         },
       });
-      return res.status(200).json(result)
+      return res.status(200).json(result);
     } catch (error) {
-      return res.status(403).json({err: "Error occured while creating a post"})
+      return res
+        .status(403)
+        .json({ err: "Error occured while creating a post" });
     }
   }
 }
