@@ -1,4 +1,5 @@
 import Script from "next/script";
+import Link from "next/link";
 
 export default function Head() {
   return (

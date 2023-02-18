@@ -6,6 +6,7 @@ import CreatePost from "./components/CreatePost";
 import Error from "./components/Error";
 import Loading from "./components/Loading";
 import Posts from "./components/Posts";
+import Toggle from "./components/Toggle";
 import { type PostType } from "./types/Posts";
 
 // Fetch all posts from the server

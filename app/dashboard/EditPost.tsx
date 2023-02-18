@@ -4,6 +4,10 @@ import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import { PostType } from "../types/Posts";
+import Toggle from "../components/Toggle";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 type EditPostProps = {
   post: PostType;
@@ -12,6 +16,38 @@ type EditPostProps = {
 };
 
 const EditPost = ({ post, userName, userImage }: EditPostProps) => {
+  const [isToggleOpen, setIsToggleOpen] = useState(false);
+  let deleteToastId: string;
+  const queryClient = useQueryClient();
+
+  const toggleHandler = () => {
+    setIsToggleOpen(!isToggleOpen);
+  };
+
+  //Delete Post
+  const { mutate } = useMutation(
+    async () => {
+      await axios.delete("/api/posts/deletePost", { data: post.id });
+    },
+    {
+      onError: (error) => {
+        console.log("error", error);
+        toast.error("Error deleting post", { id: deleteToastId });
+        setIsToggleOpen(!isToggleOpen);
+      },
+      onSuccess: (data) => {
+        toast.success("Post deleted successfully", { id: deleteToastId });
+        queryClient.invalidateQueries(["auth-posts"]);
+        setIsToggleOpen(!isToggleOpen);
+      },
+    }
+  );
+
+  const deletePost = () => {
+    deleteToastId = toast.loading("Deleting post...", { id: deleteToastId });
+    mutate();
+  };
+
   return (
     <div key={`${post.title}_id`} className="p-4 lg:w-1/3">
       <div className="h-full bg-gray-100 bg-opacity-75 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative">
@@ -24,23 +60,23 @@ const EditPost = ({ post, userName, userImage }: EditPostProps) => {
               width={200}
               height={200}
             />
-            <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
-              {userName}
-            </h2>
+            <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{userName}</h2>
           </div>
+
+          {/* <!-- Modal toggle --> */}
           <button
+            onClick={toggleHandler}
             type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             <i className="fa-solid fa-trash"></i>
             <span className="sr-only">Delete Post</span>
           </button>
+
+          {isToggleOpen && <Toggle isToggleOpen={isToggleOpen} toggleHandler={toggleHandler} deletePost={deletePost} />}
         </h1>
         <p className="leading-relaxed mb-3">{post.title}</p>
-        <Link
-          href={`/post/${post.id}`}
-          className="text-indigo-500 inline-flex items-center"
-        >
+        <Link href={`/post/${post.id}`} className="text-indigo-500 inline-flex items-center">
           Learn More
           <svg
             className="w-4 h-4 ml-2"
@@ -71,10 +107,7 @@ const EditPost = ({ post, userName, userImage }: EditPostProps) => {
             </svg>
             1.2K
           </span>
-          <Link
-            href={`/post/${post.id}`}
-            className="text-gray-400 inline-flex items-center leading-none text-sm"
-          >
+          <Link href={`/post/${post.id}`} className="text-gray-400 inline-flex items-center leading-none text-sm">
             <svg
               className="w-4 h-4 mr-1"
               stroke="currentColor"

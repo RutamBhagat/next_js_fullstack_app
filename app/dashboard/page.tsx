@@ -14,6 +14,7 @@ const Dashboard = async () => {
       <span className="font-semibold text-lg text-gray-700 ">
         Welcome back {session.user?.name}
       </span>
+      
       <MyPosts />
     </div>
   );
