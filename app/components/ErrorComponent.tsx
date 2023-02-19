@@ -1,6 +1,6 @@
 import React from "react";
 
-const Error = ({ message }: { message: string }) => {
+const ErrorComponent = ({ message }: { message: string }) => {
     return (
         <div className="flex justify-center items-center w-full min-h-screen">
           <div role="status">
@@ -12,4 +12,4 @@ const Error = ({ message }: { message: string }) => {
       );
 };
 
-export default Error;
+export default ErrorComponent;

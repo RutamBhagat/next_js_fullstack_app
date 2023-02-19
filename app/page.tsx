@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import shortid from "shortid";
 import CreatePost from "./components/CreatePost";
-import Error from "./components/Error";
-import Loading from "./components/Loading";
-import Posts from "./components/Posts";
+import ErrorComponent from "./components/ErrorComponent";
+import LoadingComponent from "./components/LoadingComponent";
+import Posts from "./components/Post";
 import Toggle from "./components/Toggle";
 import { type PostType } from "./types/Posts";
 
@@ -22,12 +22,12 @@ export default function Home() {
   });
 
   if (isLoading) {
-    <Loading />;
+    <LoadingComponent />;
   }
 
   if (isError) {
     const { message } = error as Error;
-    <Error message={message} />;
+    <ErrorComponent message={message} />;
   }
 
   return (

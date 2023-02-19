@@ -3,8 +3,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { type AuthPostsType } from "../types/AuthPosts";
-import Loading from "../components/Loading";
-import Error from "../components/Error";
+import LoadingComponent from "../components/LoadingComponent";
+import ErrorComponent from "../components/ErrorComponent";
 import EditPost from "./EditPost";
 import shortid from "shortid";
 
@@ -20,12 +20,12 @@ const MyPosts = () => {
   });
 
   if (isLoading) {
-    return <Loading />;
+    return <LoadingComponent />;
   }
 
   if (isError) {
     const { message } = error as Error;
-    return <Error message={message} />;
+    return <ErrorComponent message={message} />;
   }
   
   return (
