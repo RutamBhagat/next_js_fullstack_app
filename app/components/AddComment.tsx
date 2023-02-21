@@ -16,6 +16,7 @@ const AddComment = ({ id }: { id: string }) => {
       onSuccess: (data) => {
         setTitle("")
         setIsDisabled(false)
+        queryClient.invalidateQueries(["detail-post"])
         toast.success("Added your comment", {id: commentToastId})
       },
       onError: (error) => {
