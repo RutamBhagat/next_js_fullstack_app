@@ -22,4 +22,6 @@ type Comment = {
   createdAt: string;
   postId: string;
   userId: string;
+  message?: string;
+  user?: User;
 };
