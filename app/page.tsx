@@ -9,7 +9,7 @@ import Posts from "./components/Post";
 import Toggle from "./components/Toggle";
 import { type PostType } from "./types/Posts";
 
-// Fetch all posts from the server
+//Fetch all posts from the server
 const allPosts = async () => {
   const response = await axios.get("/api/posts/getPosts");
   return response.data;
