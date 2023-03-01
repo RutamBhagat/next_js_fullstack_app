@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         description:
           "Unleash the power of the DragonRaidenShogun with this Solflare NFT. Channeling the ferocity of a dragon, the lightning speed of a raiden, and the wisdom of a shogun, this token embodies the ultimate fusion of strength, agility, and strategy. Join the celebration of the Solflare X launch and add this NFT to your collection today!",
         image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmuSu28XmFBGqZ4d1llHuYmZ0wH6Qzg2bR-Hd5XyA3fAXj90GLVzobpzP-IoVhDzpz3bE&usqp=CAU",
+          "https://raw.githubusercontent.com/RutamBhagat/next_js_fullstack_app/main/public/dragonraidenshogun.jpg",
       };
       return res.status(200).json(data);
     } catch (err) {
